@@ -71,7 +71,7 @@ function TopologyMap() {
         />
       ))}
       {customers.map((c, i) => {
-        const parent = regional[Math.floor(i / 2)];
+        const parent = regional[Math.min(Math.floor(i / 2), regional.length - 1)]!;
         return (
           <line
             key={`cust-${c.label}`}
