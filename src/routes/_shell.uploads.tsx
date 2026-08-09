@@ -26,32 +26,46 @@ export const Route = createFileRoute("/_shell/uploads")({
   component: UploadsPage,
 });
 
-const files = [
+const files: Array<{
+  name: string;
+  uploaded: string;
+  by: string;
+  status: "imported" | "invalid";
+  summary: {
+    customers: number;
+    services: number;
+    links: number;
+    devices: number;
+    interfaces: number;
+    invalid: number;
+    duplicates: number;
+  };
+}> = [
   {
     name: "MTL_Infrastructure_Aug2026.xlsx",
     uploaded: "2026-08-07 06:12",
     by: "G. Phiri",
-    status: "imported" as const,
     summary: { customers: 142, services: 168, links: 214, devices: 96, interfaces: 231, invalid: 3, duplicates: 7 },
+    status: "imported",
   },
   {
     name: "MTL_Infrastructure_Jul2026.xlsx",
     uploaded: "2026-07-03 06:08",
     by: "T. Banda",
-    status: "imported" as const,
     summary: { customers: 139, services: 161, links: 205, devices: 94, interfaces: 220, invalid: 1, duplicates: 4 },
+    status: "imported",
   },
   {
     name: "MTL_Links_Draft.xlsx",
     uploaded: "2026-07-01 15:44",
     by: "A. Nyirenda",
-    status: "invalid" as const,
     summary: { customers: 0, services: 0, links: 0, devices: 0, interfaces: 0, invalid: 0, duplicates: 0 },
+    status: "invalid",
   },
 ];
 
 function UploadsPage() {
-  const latest = files[0];
+  const latest = files[0]!;
 
   return (
     <>

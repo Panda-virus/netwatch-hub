@@ -17,6 +17,7 @@ import { Route as ShellDevicesRouteImport } from './routes/_shell.devices'
 import { Route as ShellReportsRouteImport } from './routes/_shell.reports'
 import { Route as ShellSettingsRouteImport } from './routes/_shell.settings'
 import { Route as ShellTemplatesRouteImport } from './routes/_shell.templates'
+import { Route as ShellUploadsRouteImport } from './routes/_shell.uploads'
 import { Route as ShellUsersRouteImport } from './routes/_shell.users'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +59,11 @@ const ShellTemplatesRoute = ShellTemplatesRouteImport.update({
   path: '/templates',
   getParentRoute: () => ShellRoute,
 } as any)
+const ShellUploadsRoute = ShellUploadsRouteImport.update({
+  id: '/uploads',
+  path: '/uploads',
+  getParentRoute: () => ShellRoute,
+} as any)
 const ShellUsersRoute = ShellUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
+  '/uploads': typeof ShellUploadsRoute
   '/users': typeof ShellUsersRoute
 }
 export interface FileRoutesByTo {
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
+  '/uploads': typeof ShellUploadsRoute
   '/users': typeof ShellUsersRoute
 }
 export interface FileRoutesById {
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/_shell/reports': typeof ShellReportsRoute
   '/_shell/settings': typeof ShellSettingsRoute
   '/_shell/templates': typeof ShellTemplatesRoute
+  '/_shell/uploads': typeof ShellUploadsRoute
   '/_shell/users': typeof ShellUsersRoute
 }
 export interface FileRouteTypes {
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/templates'
+    | '/uploads'
     | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/templates'
+    | '/uploads'
     | '/users'
   id:
     | '__root__'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/_shell/reports'
     | '/_shell/settings'
     | '/_shell/templates'
+    | '/_shell/uploads'
     | '/_shell/users'
   fileRoutesById: FileRoutesById
 }
@@ -193,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellTemplatesRouteImport
       parentRoute: typeof ShellRoute
     }
+    '/_shell/uploads': {
+      id: '/_shell/uploads'
+      path: '/uploads'
+      fullPath: '/uploads'
+      preLoaderRoute: typeof ShellUploadsRouteImport
+      parentRoute: typeof ShellRoute
+    }
     '/_shell/users': {
       id: '/_shell/users'
       path: '/users'
@@ -210,6 +229,7 @@ interface ShellRouteChildren {
   ShellReportsRoute: typeof ShellReportsRoute
   ShellSettingsRoute: typeof ShellSettingsRoute
   ShellTemplatesRoute: typeof ShellTemplatesRoute
+  ShellUploadsRoute: typeof ShellUploadsRoute
   ShellUsersRoute: typeof ShellUsersRoute
 }
 
@@ -220,6 +240,7 @@ const ShellRouteChildren: ShellRouteChildren = {
   ShellReportsRoute: ShellReportsRoute,
   ShellSettingsRoute: ShellSettingsRoute,
   ShellTemplatesRoute: ShellTemplatesRoute,
+  ShellUploadsRoute: ShellUploadsRoute,
   ShellUsersRoute: ShellUsersRoute,
 }
 
