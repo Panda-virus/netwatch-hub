@@ -20,7 +20,7 @@ import {
 } from "recharts";
 
 import { PageHeading } from "@/components/noc/PageHeading";
-import { StatusBadge, StatusDot } from "@/components/noc/StatusDot";
+import { StatusBadge, StatusDot, toneForStatus } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { devices, healthSegments, trafficSeries } from "@/lib/noc-data";
