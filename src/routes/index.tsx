@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "MTL ANPMRS Login | Network Performance Monitoring" },
       {
         property: "og:description",
-        content: "Sign in to monitor MTL network performance, alerts and automated reporting.",
+        content: "Sign in to the MTL infrastructure reporting automation platform.",
       },
     ],
   }),
@@ -52,7 +52,7 @@ function LoginPage() {
             SLA tracking and management-ready reports for the MTL Network Operations Centre.
           </p>
           <ul className="mt-8 grid max-w-lg gap-4 sm:grid-cols-3">
-            <Feature icon={Activity} label="Real-time monitoring" detail="850 devices polled" />
+            <Feature icon={Activity} label="Automated reporting" detail="SolarWinds & Observium" />
             <Feature icon={FileText} label="Automated reporting" detail="Daily to monthly SLA" />
             <Feature icon={ShieldCheck} label="Audit ready" detail="24-month retention" />
           </ul>
