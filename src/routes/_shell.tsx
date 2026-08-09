@@ -67,11 +67,6 @@ function ShellLayout() {
               >
                 <item.icon className="h-4 w-4 shrink-0" />
                 <span className="flex-1">{item.label}</span>
-                {"badge" in item && item.badge && (
-                  <span className="rounded-full bg-sidebar-primary px-2 py-0.5 text-[10px] font-bold text-sidebar-primary-foreground">
-                    {item.badge}
-                  </span>
-                )}
               </Link>
             );
           })}

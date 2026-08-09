@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   Activity,
   ArrowUpRight,
-  CircleAlert,
   FileText,
   Gauge,
   RefreshCw,
   Server,
+  Workflow,
 } from "lucide-react";
 import {
   Area,
@@ -20,10 +20,17 @@ import {
 } from "recharts";
 
 import { PageHeading } from "@/components/noc/PageHeading";
-import { StatusBadge, StatusDot, toneForStatus } from "@/components/noc/StatusDot";
+import { StatusBadge, StatusDot } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { alerts, devices, healthSegments, trafficSeries } from "@/lib/noc-data";
+import { devices, healthSegments, trafficSeries } from "@/lib/noc-data";
+
+const recentJobs = [
+  { id: "JOB-2041", name: "NB Monthly Infrastructure Report", stage: "completed", tone: "ok" as const, time: "06:04" },
+  { id: "JOB-2040", name: "FCB Weekly Link Report", stage: "capturing_screenshots", tone: "info" as const, time: "05:58" },
+  { id: "JOB-2039", name: "All Customers Daily Summary", stage: "generating_pdf", tone: "info" as const, time: "05:41" },
+  { id: "JOB-2038", name: "Escom Monthly SLA Report", stage: "failed", tone: "crit" as const, time: "04:12" },
+];
 
 export const Route = createFileRoute("/_shell/dashboard")({
   head: () => ({
@@ -99,17 +106,16 @@ function StatCard({
 
 function DashboardPage() {
   const online = devices.filter((d) => d.status === "online").length;
-  const recent = alerts.slice(0, 4);
 
   return (
     <>
       <PageHeading
-        title="Network Operations Dashboard"
-        subtitle="Automated collection cycle completed 2 minutes ago · Next poll in 3 minutes"
+        title="Reporting Automation Dashboard"
+        subtitle="Last report job completed 2 minutes ago · Screenshots sourced from SolarWinds & Observium"
         actions={
           <>
             <Button variant="outline" size="sm">
-              <RefreshCw className="mr-2 h-4 w-4" /> Run collection now
+              <RefreshCw className="mr-2 h-4 w-4" /> Refresh jobs
             </Button>
             <Button size="sm">
               <FileText className="mr-2 h-4 w-4" /> Generate daily report
@@ -140,13 +146,13 @@ function DashboardPage() {
           </div>
         </StatCard>
 
-        <StatCard label="Active Alerts" value="12" icon={CircleAlert} highlight>
+        <StatCard label="Report Jobs (24h)" value="12" icon={Workflow} highlight>
           <div className="flex flex-wrap gap-2">
-            <StatusBadge tone="crit" pulse>
-              2 Critical
+            <StatusBadge tone="info" pulse>
+              3 Processing
             </StatusBadge>
-            <StatusBadge tone="warn">7 Warning</StatusBadge>
-            <StatusBadge tone="info">3 Info</StatusBadge>
+            <StatusBadge tone="ok">8 Completed</StatusBadge>
+            <StatusBadge tone="crit">1 Failed</StatusBadge>
           </div>
         </StatCard>
 
@@ -298,24 +304,24 @@ function DashboardPage() {
         </section>
 
         <section className="panel p-5">
-          <h3 className="text-base font-bold">Recent Network Alerts</h3>
-          <p className="text-xs text-muted-foreground">Correlated from SNMP traps and syslog</p>
+          <h3 className="text-base font-bold">Recent Report Jobs</h3>
+          <p className="text-xs text-muted-foreground">Background jobs processed by the reporting engine</p>
           <ul className="mt-4 space-y-3">
-            {recent.map((a) => (
+            {recentJobs.map((a) => (
               <li key={a.id} className="rounded-md border border-border p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <StatusBadge tone={toneForStatus(a.severity)} pulse={a.severity === "critical"}>
-                    {a.severity}
+                  <StatusBadge tone={a.tone} pulse={a.stage !== "completed" && a.stage !== "failed"}>
+                    {a.stage}
                   </StatusBadge>
                   <span className="font-mono text-xs text-muted-foreground">{a.time}</span>
                 </div>
-                <p className="mt-2 text-sm font-semibold">{a.issue}</p>
-                <p className="font-mono text-[11px] text-muted-foreground">{a.device}</p>
+                <p className="mt-2 text-sm font-semibold">{a.name}</p>
+                <p className="font-mono text-[11px] text-muted-foreground">{a.id}</p>
               </li>
             ))}
           </ul>
           <Button variant="outline" className="mt-4 w-full" size="sm">
-            Open alert centre
+            Open report jobs
           </Button>
         </section>
       </div>
