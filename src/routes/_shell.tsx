@@ -1,6 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
-  Activity,
   BarChart3,
   Bell,
   FileText,
@@ -9,7 +8,7 @@ import {
   Router as RouterIcon,
   Search,
   Settings,
-  ShieldAlert,
+  Table2,
   Users,
   LayoutTemplate,
 } from "lucide-react";
@@ -24,9 +23,8 @@ export const Route = createFileRoute("/_shell")({
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/devices", label: "Network Devices", icon: RouterIcon },
-  { to: "/monitoring", label: "Live Monitoring", icon: Activity },
-  { to: "/alerts", label: "Alerts", icon: ShieldAlert, badge: "12" },
+  { to: "/devices", label: "Infrastructure", icon: RouterIcon },
+  { to: "/uploads", label: "Infrastructure Files", icon: Table2 },
   { to: "/reports", label: "Reports", icon: FileText },
   { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
@@ -35,10 +33,9 @@ const nav = [
 ] as const;
 
 const titles: Record<string, string> = {
-  "/dashboard": "Network Operations Dashboard",
-  "/devices": "Network Devices",
-  "/monitoring": "Live Network Monitoring",
-  "/alerts": "Alert Management Centre",
+  "/dashboard": "Reporting Automation Dashboard",
+  "/devices": "Infrastructure Inventory",
+  "/uploads": "Infrastructure File Uploads",
   "/reports": "Automated Report Generation",
   "/templates": "Report Template Management",
   "/analytics": "Analytics & Performance Trends",
@@ -100,12 +97,12 @@ function ShellLayout() {
           <div className="min-w-0 flex-1">
             <h2 className="truncate font-display text-lg font-bold">{titles[pathname] ?? "MTL ANPMRS"}</h2>
             <p className="hidden text-[11px] text-muted-foreground sm:block">
-              Malawi Telecommunications Limited • Data sources: Observium, SolarWinds, SNMP
+              Malawi Telecommunications Limited • Reporting automation over SolarWinds &amp; Observium
             </p>
           </div>
           <div className="relative hidden w-72 md:block">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search devices, alerts, reports…" className="bg-secondary pl-9" />
+            <Input placeholder="Search customers, links, reports…" className="bg-secondary pl-9" />
           </div>
           <button
             className="relative grid h-9 w-9 place-items-center rounded-md border border-border text-muted-foreground hover:text-mtl-blue"
