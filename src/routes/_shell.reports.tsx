@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, FileSpreadsheet, FileText, Play } from "lucide-react";
+import { toast } from "sonner";
 
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
@@ -103,10 +104,12 @@ function ReportsPage() {
         </div>
 
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <Button>
+          <Button onClick={() => toast.success("Report run started — reading template and capturing today's graphs")}>
             <Play className="mr-2 h-4 w-4" /> Generate Report
           </Button>
-          <Button variant="outline">Preview template</Button>
+          <Button asChild variant="outline">
+            <Link to="/templates">Preview template</Link>
+          </Button>
           <p className="text-xs text-muted-foreground">Average generation time: 38 seconds</p>
         </div>
       </section>
@@ -144,7 +147,7 @@ function ReportsPage() {
                     </span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast.success(`Downloading ${r.name}`)}>
                       <Download className="mr-1.5 h-3.5 w-3.5" /> Download
                     </Button>
                   </td>
