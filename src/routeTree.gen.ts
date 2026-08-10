@@ -17,6 +17,7 @@ import { Route as ShellSettingsRouteImport } from './routes/_shell.settings'
 import { Route as ShellTemplatesRouteImport } from './routes/_shell.templates'
 import { Route as ShellUploadsRouteImport } from './routes/_shell.uploads'
 import { Route as ShellAdminIndexRouteImport } from './routes/_shell.admin.index'
+import { Route as ShellAdminUsersRouteImport } from './routes/_shell.admin.users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +58,11 @@ const ShellAdminIndexRoute = ShellAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => ShellRoute,
 } as any)
+const ShellAdminUsersRoute = ShellAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => ShellRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
+  '/admin/users': typeof ShellAdminUsersRoute
   '/admin/': typeof ShellAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
+  '/admin/users': typeof ShellAdminUsersRoute
   '/admin': typeof ShellAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/_shell/settings': typeof ShellSettingsRoute
   '/_shell/templates': typeof ShellTemplatesRoute
   '/_shell/uploads': typeof ShellUploadsRoute
+  '/_shell/admin/users': typeof ShellAdminUsersRoute
   '/_shell/admin/': typeof ShellAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/templates'
     | '/uploads'
+    | '/admin/users'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/templates'
     | '/uploads'
+    | '/admin/users'
     | '/admin'
   id:
     | '__root__'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/_shell/settings'
     | '/_shell/templates'
     | '/_shell/uploads'
+    | '/_shell/admin/users'
     | '/_shell/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -181,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellAdminIndexRouteImport
       parentRoute: typeof ShellRoute
     }
+    '/_shell/admin/users': {
+      id: '/_shell/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof ShellAdminUsersRouteImport
+      parentRoute: typeof ShellRoute
+    }
   }
 }
 
@@ -190,6 +209,7 @@ interface ShellRouteChildren {
   ShellSettingsRoute: typeof ShellSettingsRoute
   ShellTemplatesRoute: typeof ShellTemplatesRoute
   ShellUploadsRoute: typeof ShellUploadsRoute
+  ShellAdminUsersRoute: typeof ShellAdminUsersRoute
   ShellAdminIndexRoute: typeof ShellAdminIndexRoute
 }
 
@@ -199,6 +219,7 @@ const ShellRouteChildren: ShellRouteChildren = {
   ShellSettingsRoute: ShellSettingsRoute,
   ShellTemplatesRoute: ShellTemplatesRoute,
   ShellUploadsRoute: ShellUploadsRoute,
+  ShellAdminUsersRoute: ShellAdminUsersRoute,
   ShellAdminIndexRoute: ShellAdminIndexRoute,
 }
 
