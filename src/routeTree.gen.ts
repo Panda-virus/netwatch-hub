@@ -17,6 +17,7 @@ import { Route as ShellSettingsRouteImport } from './routes/_shell.settings'
 import { Route as ShellTemplatesRouteImport } from './routes/_shell.templates'
 import { Route as ShellUploadsRouteImport } from './routes/_shell.uploads'
 import { Route as ShellAdminIndexRouteImport } from './routes/_shell.admin.index'
+import { Route as ShellAdminIntegrationsRouteImport } from './routes/_shell.admin.integrations'
 import { Route as ShellAdminLogsRouteImport } from './routes/_shell.admin.logs'
 import { Route as ShellAdminUsersRouteImport } from './routes/_shell.admin.users'
 
@@ -59,6 +60,11 @@ const ShellAdminIndexRoute = ShellAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => ShellRoute,
 } as any)
+const ShellAdminIntegrationsRoute = ShellAdminIntegrationsRouteImport.update({
+  id: '/admin/integrations',
+  path: '/admin/integrations',
+  getParentRoute: () => ShellRoute,
+} as any)
 const ShellAdminLogsRoute = ShellAdminLogsRouteImport.update({
   id: '/admin/logs',
   path: '/admin/logs',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
+  '/admin/integrations': typeof ShellAdminIntegrationsRoute
   '/admin/logs': typeof ShellAdminLogsRoute
   '/admin/users': typeof ShellAdminUsersRoute
   '/admin/': typeof ShellAdminIndexRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
+  '/admin/integrations': typeof ShellAdminIntegrationsRoute
   '/admin/logs': typeof ShellAdminLogsRoute
   '/admin/users': typeof ShellAdminUsersRoute
   '/admin': typeof ShellAdminIndexRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/_shell/settings': typeof ShellSettingsRoute
   '/_shell/templates': typeof ShellTemplatesRoute
   '/_shell/uploads': typeof ShellUploadsRoute
+  '/_shell/admin/integrations': typeof ShellAdminIntegrationsRoute
   '/_shell/admin/logs': typeof ShellAdminLogsRoute
   '/_shell/admin/users': typeof ShellAdminUsersRoute
   '/_shell/admin/': typeof ShellAdminIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/templates'
     | '/uploads'
+    | '/admin/integrations'
     | '/admin/logs'
     | '/admin/users'
     | '/admin/'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/templates'
     | '/uploads'
+    | '/admin/integrations'
     | '/admin/logs'
     | '/admin/users'
     | '/admin'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/_shell/settings'
     | '/_shell/templates'
     | '/_shell/uploads'
+    | '/_shell/admin/integrations'
     | '/_shell/admin/logs'
     | '/_shell/admin/users'
     | '/_shell/admin/'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellAdminIndexRouteImport
       parentRoute: typeof ShellRoute
     }
+    '/_shell/admin/integrations': {
+      id: '/_shell/admin/integrations'
+      path: '/admin/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof ShellAdminIntegrationsRouteImport
+      parentRoute: typeof ShellRoute
+    }
     '/_shell/admin/logs': {
       id: '/_shell/admin/logs'
       path: '/admin/logs'
@@ -228,6 +247,7 @@ interface ShellRouteChildren {
   ShellSettingsRoute: typeof ShellSettingsRoute
   ShellTemplatesRoute: typeof ShellTemplatesRoute
   ShellUploadsRoute: typeof ShellUploadsRoute
+  ShellAdminIntegrationsRoute: typeof ShellAdminIntegrationsRoute
   ShellAdminLogsRoute: typeof ShellAdminLogsRoute
   ShellAdminUsersRoute: typeof ShellAdminUsersRoute
   ShellAdminIndexRoute: typeof ShellAdminIndexRoute
@@ -239,6 +259,7 @@ const ShellRouteChildren: ShellRouteChildren = {
   ShellSettingsRoute: ShellSettingsRoute,
   ShellTemplatesRoute: ShellTemplatesRoute,
   ShellUploadsRoute: ShellUploadsRoute,
+  ShellAdminIntegrationsRoute: ShellAdminIntegrationsRoute,
   ShellAdminLogsRoute: ShellAdminLogsRoute,
   ShellAdminUsersRoute: ShellAdminUsersRoute,
   ShellAdminIndexRoute: ShellAdminIndexRoute,
