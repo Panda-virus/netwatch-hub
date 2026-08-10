@@ -11,14 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShellRouteImport } from './routes/_shell'
-import { Route as ShellAnalyticsRouteImport } from './routes/_shell.analytics'
 import { Route as ShellDashboardRouteImport } from './routes/_shell.dashboard'
-import { Route as ShellDevicesRouteImport } from './routes/_shell.devices'
 import { Route as ShellReportsRouteImport } from './routes/_shell.reports'
 import { Route as ShellSettingsRouteImport } from './routes/_shell.settings'
 import { Route as ShellTemplatesRouteImport } from './routes/_shell.templates'
 import { Route as ShellUploadsRouteImport } from './routes/_shell.uploads'
-import { Route as ShellUsersRouteImport } from './routes/_shell.users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,19 +26,9 @@ const ShellRoute = ShellRouteImport.update({
   id: '/_shell',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShellAnalyticsRoute = ShellAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => ShellRoute,
-} as any)
 const ShellDashboardRoute = ShellDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => ShellRoute,
-} as any)
-const ShellDevicesRoute = ShellDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
   getParentRoute: () => ShellRoute,
 } as any)
 const ShellReportsRoute = ShellReportsRouteImport.update({
@@ -64,82 +51,48 @@ const ShellUploadsRoute = ShellUploadsRouteImport.update({
   path: '/uploads',
   getParentRoute: () => ShellRoute,
 } as any)
-const ShellUsersRoute = ShellUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => ShellRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analytics': typeof ShellAnalyticsRoute
   '/dashboard': typeof ShellDashboardRoute
-  '/devices': typeof ShellDevicesRoute
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
-  '/users': typeof ShellUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analytics': typeof ShellAnalyticsRoute
   '/dashboard': typeof ShellDashboardRoute
-  '/devices': typeof ShellDevicesRoute
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
-  '/users': typeof ShellUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_shell': typeof ShellRouteWithChildren
-  '/_shell/analytics': typeof ShellAnalyticsRoute
   '/_shell/dashboard': typeof ShellDashboardRoute
-  '/_shell/devices': typeof ShellDevicesRoute
   '/_shell/reports': typeof ShellReportsRoute
   '/_shell/settings': typeof ShellSettingsRoute
   '/_shell/templates': typeof ShellTemplatesRoute
   '/_shell/uploads': typeof ShellUploadsRoute
-  '/_shell/users': typeof ShellUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/analytics'
-    | '/dashboard'
-    | '/devices'
-    | '/reports'
-    | '/settings'
-    | '/templates'
-    | '/uploads'
-    | '/users'
+    '/' | '/dashboard' | '/reports' | '/settings' | '/templates' | '/uploads'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/analytics'
-    | '/dashboard'
-    | '/devices'
-    | '/reports'
-    | '/settings'
-    | '/templates'
-    | '/uploads'
-    | '/users'
+  to: '/' | '/dashboard' | '/reports' | '/settings' | '/templates' | '/uploads'
   id:
     | '__root__'
     | '/'
     | '/_shell'
-    | '/_shell/analytics'
     | '/_shell/dashboard'
-    | '/_shell/devices'
     | '/_shell/reports'
     | '/_shell/settings'
     | '/_shell/templates'
     | '/_shell/uploads'
-    | '/_shell/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -163,25 +116,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_shell/analytics': {
-      id: '/_shell/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof ShellAnalyticsRouteImport
-      parentRoute: typeof ShellRoute
-    }
     '/_shell/dashboard': {
       id: '/_shell/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof ShellDashboardRouteImport
-      parentRoute: typeof ShellRoute
-    }
-    '/_shell/devices': {
-      id: '/_shell/devices'
-      path: '/devices'
-      fullPath: '/devices'
-      preLoaderRoute: typeof ShellDevicesRouteImport
       parentRoute: typeof ShellRoute
     }
     '/_shell/reports': {
@@ -212,36 +151,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellUploadsRouteImport
       parentRoute: typeof ShellRoute
     }
-    '/_shell/users': {
-      id: '/_shell/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof ShellUsersRouteImport
-      parentRoute: typeof ShellRoute
-    }
   }
 }
 
 interface ShellRouteChildren {
-  ShellAnalyticsRoute: typeof ShellAnalyticsRoute
   ShellDashboardRoute: typeof ShellDashboardRoute
-  ShellDevicesRoute: typeof ShellDevicesRoute
   ShellReportsRoute: typeof ShellReportsRoute
   ShellSettingsRoute: typeof ShellSettingsRoute
   ShellTemplatesRoute: typeof ShellTemplatesRoute
   ShellUploadsRoute: typeof ShellUploadsRoute
-  ShellUsersRoute: typeof ShellUsersRoute
 }
 
 const ShellRouteChildren: ShellRouteChildren = {
-  ShellAnalyticsRoute: ShellAnalyticsRoute,
   ShellDashboardRoute: ShellDashboardRoute,
-  ShellDevicesRoute: ShellDevicesRoute,
   ShellReportsRoute: ShellReportsRoute,
   ShellSettingsRoute: ShellSettingsRoute,
   ShellTemplatesRoute: ShellTemplatesRoute,
   ShellUploadsRoute: ShellUploadsRoute,
-  ShellUsersRoute: ShellUsersRoute,
 }
 
 const ShellRouteWithChildren = ShellRoute._addFileChildren(ShellRouteChildren)
