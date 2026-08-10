@@ -11,14 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShellRouteImport } from './routes/_shell'
-import { Route as ShellAnalyticsRouteImport } from './routes/_shell.analytics'
 import { Route as ShellDashboardRouteImport } from './routes/_shell.dashboard'
-import { Route as ShellDevicesRouteImport } from './routes/_shell.devices'
 import { Route as ShellReportsRouteImport } from './routes/_shell.reports'
 import { Route as ShellSettingsRouteImport } from './routes/_shell.settings'
 import { Route as ShellTemplatesRouteImport } from './routes/_shell.templates'
 import { Route as ShellUploadsRouteImport } from './routes/_shell.uploads'
-import { Route as ShellUsersRouteImport } from './routes/_shell.users'
+import { Route as ShellAdminIndexRouteImport } from './routes/_shell.admin.index'
+import { Route as ShellAdminIntegrationsRouteImport } from './routes/_shell.admin.integrations'
+import { Route as ShellAdminLogsRouteImport } from './routes/_shell.admin.logs'
+import { Route as ShellAdminSecurityRouteImport } from './routes/_shell.admin.security'
+import { Route as ShellAdminUsersRouteImport } from './routes/_shell.admin.users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,19 +31,9 @@ const ShellRoute = ShellRouteImport.update({
   id: '/_shell',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShellAnalyticsRoute = ShellAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => ShellRoute,
-} as any)
 const ShellDashboardRoute = ShellDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => ShellRoute,
-} as any)
-const ShellDevicesRoute = ShellDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
   getParentRoute: () => ShellRoute,
 } as any)
 const ShellReportsRoute = ShellReportsRouteImport.update({
@@ -64,82 +56,114 @@ const ShellUploadsRoute = ShellUploadsRouteImport.update({
   path: '/uploads',
   getParentRoute: () => ShellRoute,
 } as any)
-const ShellUsersRoute = ShellUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
+const ShellAdminIndexRoute = ShellAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellAdminIntegrationsRoute = ShellAdminIntegrationsRouteImport.update({
+  id: '/admin/integrations',
+  path: '/admin/integrations',
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellAdminLogsRoute = ShellAdminLogsRouteImport.update({
+  id: '/admin/logs',
+  path: '/admin/logs',
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellAdminSecurityRoute = ShellAdminSecurityRouteImport.update({
+  id: '/admin/security',
+  path: '/admin/security',
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellAdminUsersRoute = ShellAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
   getParentRoute: () => ShellRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analytics': typeof ShellAnalyticsRoute
   '/dashboard': typeof ShellDashboardRoute
-  '/devices': typeof ShellDevicesRoute
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
-  '/users': typeof ShellUsersRoute
+  '/admin/integrations': typeof ShellAdminIntegrationsRoute
+  '/admin/logs': typeof ShellAdminLogsRoute
+  '/admin/security': typeof ShellAdminSecurityRoute
+  '/admin/users': typeof ShellAdminUsersRoute
+  '/admin/': typeof ShellAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analytics': typeof ShellAnalyticsRoute
   '/dashboard': typeof ShellDashboardRoute
-  '/devices': typeof ShellDevicesRoute
   '/reports': typeof ShellReportsRoute
   '/settings': typeof ShellSettingsRoute
   '/templates': typeof ShellTemplatesRoute
   '/uploads': typeof ShellUploadsRoute
-  '/users': typeof ShellUsersRoute
+  '/admin/integrations': typeof ShellAdminIntegrationsRoute
+  '/admin/logs': typeof ShellAdminLogsRoute
+  '/admin/security': typeof ShellAdminSecurityRoute
+  '/admin/users': typeof ShellAdminUsersRoute
+  '/admin': typeof ShellAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_shell': typeof ShellRouteWithChildren
-  '/_shell/analytics': typeof ShellAnalyticsRoute
   '/_shell/dashboard': typeof ShellDashboardRoute
-  '/_shell/devices': typeof ShellDevicesRoute
   '/_shell/reports': typeof ShellReportsRoute
   '/_shell/settings': typeof ShellSettingsRoute
   '/_shell/templates': typeof ShellTemplatesRoute
   '/_shell/uploads': typeof ShellUploadsRoute
-  '/_shell/users': typeof ShellUsersRoute
+  '/_shell/admin/integrations': typeof ShellAdminIntegrationsRoute
+  '/_shell/admin/logs': typeof ShellAdminLogsRoute
+  '/_shell/admin/security': typeof ShellAdminSecurityRoute
+  '/_shell/admin/users': typeof ShellAdminUsersRoute
+  '/_shell/admin/': typeof ShellAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/analytics'
     | '/dashboard'
-    | '/devices'
     | '/reports'
     | '/settings'
     | '/templates'
     | '/uploads'
-    | '/users'
+    | '/admin/integrations'
+    | '/admin/logs'
+    | '/admin/security'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/analytics'
     | '/dashboard'
-    | '/devices'
     | '/reports'
     | '/settings'
     | '/templates'
     | '/uploads'
-    | '/users'
+    | '/admin/integrations'
+    | '/admin/logs'
+    | '/admin/security'
+    | '/admin/users'
+    | '/admin'
   id:
     | '__root__'
     | '/'
     | '/_shell'
-    | '/_shell/analytics'
     | '/_shell/dashboard'
-    | '/_shell/devices'
     | '/_shell/reports'
     | '/_shell/settings'
     | '/_shell/templates'
     | '/_shell/uploads'
-    | '/_shell/users'
+    | '/_shell/admin/integrations'
+    | '/_shell/admin/logs'
+    | '/_shell/admin/security'
+    | '/_shell/admin/users'
+    | '/_shell/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -163,25 +187,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_shell/analytics': {
-      id: '/_shell/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof ShellAnalyticsRouteImport
-      parentRoute: typeof ShellRoute
-    }
     '/_shell/dashboard': {
       id: '/_shell/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof ShellDashboardRouteImport
-      parentRoute: typeof ShellRoute
-    }
-    '/_shell/devices': {
-      id: '/_shell/devices'
-      path: '/devices'
-      fullPath: '/devices'
-      preLoaderRoute: typeof ShellDevicesRouteImport
       parentRoute: typeof ShellRoute
     }
     '/_shell/reports': {
@@ -212,36 +222,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellUploadsRouteImport
       parentRoute: typeof ShellRoute
     }
-    '/_shell/users': {
-      id: '/_shell/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof ShellUsersRouteImport
+    '/_shell/admin/': {
+      id: '/_shell/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof ShellAdminIndexRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/admin/integrations': {
+      id: '/_shell/admin/integrations'
+      path: '/admin/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof ShellAdminIntegrationsRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/admin/logs': {
+      id: '/_shell/admin/logs'
+      path: '/admin/logs'
+      fullPath: '/admin/logs'
+      preLoaderRoute: typeof ShellAdminLogsRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/admin/security': {
+      id: '/_shell/admin/security'
+      path: '/admin/security'
+      fullPath: '/admin/security'
+      preLoaderRoute: typeof ShellAdminSecurityRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/admin/users': {
+      id: '/_shell/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof ShellAdminUsersRouteImport
       parentRoute: typeof ShellRoute
     }
   }
 }
 
 interface ShellRouteChildren {
-  ShellAnalyticsRoute: typeof ShellAnalyticsRoute
   ShellDashboardRoute: typeof ShellDashboardRoute
-  ShellDevicesRoute: typeof ShellDevicesRoute
   ShellReportsRoute: typeof ShellReportsRoute
   ShellSettingsRoute: typeof ShellSettingsRoute
   ShellTemplatesRoute: typeof ShellTemplatesRoute
   ShellUploadsRoute: typeof ShellUploadsRoute
-  ShellUsersRoute: typeof ShellUsersRoute
+  ShellAdminIntegrationsRoute: typeof ShellAdminIntegrationsRoute
+  ShellAdminLogsRoute: typeof ShellAdminLogsRoute
+  ShellAdminSecurityRoute: typeof ShellAdminSecurityRoute
+  ShellAdminUsersRoute: typeof ShellAdminUsersRoute
+  ShellAdminIndexRoute: typeof ShellAdminIndexRoute
 }
 
 const ShellRouteChildren: ShellRouteChildren = {
-  ShellAnalyticsRoute: ShellAnalyticsRoute,
   ShellDashboardRoute: ShellDashboardRoute,
-  ShellDevicesRoute: ShellDevicesRoute,
   ShellReportsRoute: ShellReportsRoute,
   ShellSettingsRoute: ShellSettingsRoute,
   ShellTemplatesRoute: ShellTemplatesRoute,
   ShellUploadsRoute: ShellUploadsRoute,
-  ShellUsersRoute: ShellUsersRoute,
+  ShellAdminIntegrationsRoute: ShellAdminIntegrationsRoute,
+  ShellAdminLogsRoute: ShellAdminLogsRoute,
+  ShellAdminSecurityRoute: ShellAdminSecurityRoute,
+  ShellAdminUsersRoute: ShellAdminUsersRoute,
+  ShellAdminIndexRoute: ShellAdminIndexRoute,
 }
 
 const ShellRouteWithChildren = ShellRoute._addFileChildren(ShellRouteChildren)

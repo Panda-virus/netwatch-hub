@@ -4,6 +4,7 @@ import { CheckCircle2, FileSpreadsheet, TriangleAlert, Upload } from "lucide-rea
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_shell/uploads")({
   head: () => ({
@@ -73,9 +74,20 @@ function UploadsPage() {
         title="Infrastructure File Uploads"
         subtitle="The Excel workbook defines where infrastructure exists; templates define what must be reported"
         actions={
-          <Button size="sm">
-            <Upload className="mr-2 h-4 w-4" /> Upload workbook
-          </Button>
+          <label className="inline-flex">
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) toast.success(`${file.name} uploaded — parsing columns`);
+              }}
+            />
+            <span className="inline-flex h-9 cursor-pointer items-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+              <Upload className="mr-2 h-4 w-4" /> Upload workbook
+            </span>
+          </label>
         }
       />
 

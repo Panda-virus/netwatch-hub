@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,17 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MTL ANPMRS | Automated Network Performance Monitoring" },
+      { title: "MTL Automated Report Creation Platform" },
       {
         name: "description",
         content:
-          "Malawi Telecommunications Limited NOC platform for automated network performance monitoring, alerting and reporting.",
+          "Malawi Telecommunications Limited platform that reads Word report templates and duplicates them with each day's graphs and figures.",
       },
       { name: "author", content: "Malawi Telecommunications Limited" },
-      { property: "og:title", content: "MTL ANPMRS | Automated Network Performance Monitoring" },
+      { property: "og:title", content: "MTL Automated Report Creation Platform" },
       {
         property: "og:description",
-        content: "Automated network monitoring, SLA tracking and reporting for the MTL Network Operations Centre.",
+        content: "Automated report creation from Word templates for Malawi Telecommunications Limited.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -134,6 +135,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }

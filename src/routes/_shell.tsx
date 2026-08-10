@@ -1,50 +1,73 @@
-import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  BarChart3,
-  Bell,
   FileText,
   LayoutDashboard,
   LogOut,
-  Router as RouterIcon,
+  Plug,
   Search,
   Settings,
+  ShieldCheck,
+  ScrollText,
   Table2,
   Users,
   LayoutTemplate,
 } from "lucide-react";
+import { useEffect } from "react";
 
 import { MtlLogo } from "@/components/noc/MtlLogo";
 import { StatusDot } from "@/components/noc/StatusDot";
 import { Input } from "@/components/ui/input";
+import { signOut, useSession } from "@/lib/auth";
 
 export const Route = createFileRoute("/_shell")({
   component: ShellLayout,
 });
 
-const nav = [
+const engineerNav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/devices", label: "Infrastructure", icon: RouterIcon },
   { to: "/uploads", label: "Infrastructure Files", icon: Table2 },
-  { to: "/reports", label: "Reports", icon: FileText },
   { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
-  { to: "/analytics", label: "Analytics", icon: BarChart3 },
-  { to: "/users", label: "Users", icon: Users },
+  { to: "/reports", label: "Reports", icon: FileText },
+  { to: "/settings", label: "Settings", icon: Settings },
+] as const;
+
+const adminNav = [
+  { to: "/admin", label: "Admin Dashboard", icon: LayoutDashboard },
+  { to: "/admin/users", label: "Manage Users", icon: Users },
+  { to: "/admin/logs", label: "User Logs & Activity", icon: ScrollText },
+  { to: "/admin/integrations", label: "Integrations", icon: Plug },
+  { to: "/admin/security", label: "Security", icon: ShieldCheck },
+  { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
+  { to: "/reports", label: "Reports", icon: FileText },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
 const titles: Record<string, string> = {
-  "/dashboard": "Reporting Automation Dashboard",
-  "/devices": "Infrastructure Inventory",
+  "/dashboard": "Report Creation Dashboard",
   "/uploads": "Infrastructure File Uploads",
-  "/reports": "Automated Report Generation",
-  "/templates": "Report Template Management",
-  "/analytics": "Analytics & Performance Trends",
-  "/users": "User Management",
+  "/reports": "Report Creation & Archive",
+  "/templates": "Word Report Templates",
   "/settings": "System Settings",
+  "/admin": "System Administrator Dashboard",
+  "/admin/users": "Manage Users",
+  "/admin/logs": "User Logs & Activity",
+  "/admin/integrations": "Integrations",
+  "/admin/security": "Security",
 };
 
 function ShellLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const session = useSession();
+  const isAdmin = session?.role === "admin";
+  const nav = isAdmin ? adminNav : engineerNav;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.localStorage.getItem("mtl-anpmrs-session")) {
+      navigate({ to: "/" });
+    }
+  }, [navigate, pathname]);
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -54,7 +77,7 @@ function ShellLayout() {
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {nav.map((item) => {
-            const active = pathname.startsWith(item.to);
+            const active = item.to === "/admin" ? pathname === "/admin" : pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
@@ -74,15 +97,23 @@ function ShellLayout() {
         <div className="border-t border-sidebar-border p-4">
           <div className="flex items-center gap-3">
             <div className="grid h-9 w-9 place-items-center rounded-full bg-sidebar-accent text-xs font-bold text-sidebar-accent-foreground">
-              GP
+              {session?.initials ?? "MTL"}
             </div>
             <div className="min-w-0 flex-1 leading-tight">
-              <p className="truncate text-sm font-semibold">NOC Engineer</p>
-              <p className="truncate text-[11px] text-sidebar-foreground/65">South Region</p>
+              <p className="truncate text-sm font-semibold">{session?.title ?? "Signed out"}</p>
+              <p className="truncate text-[11px] text-sidebar-foreground/65">{session?.unit ?? "MTL"}</p>
             </div>
-            <Link to="/" aria-label="Sign out" className="text-sidebar-foreground/60 hover:text-sidebar-primary">
+            <button
+              type="button"
+              aria-label="Sign out"
+              onClick={() => {
+                signOut();
+                navigate({ to: "/" });
+              }}
+              className="text-sidebar-foreground/60 hover:text-sidebar-primary"
+            >
               <LogOut className="h-4 w-4" />
-            </Link>
+            </button>
           </div>
         </div>
       </aside>
@@ -92,33 +123,27 @@ function ShellLayout() {
           <div className="min-w-0 flex-1">
             <h2 className="truncate font-display text-lg font-bold">{titles[pathname] ?? "MTL ANPMRS"}</h2>
             <p className="hidden text-[11px] text-muted-foreground sm:block">
-              Malawi Telecommunications Limited • Reporting automation over SolarWinds &amp; Observium
+              Malawi Telecommunications Limited • Automated report creation from Word templates
             </p>
           </div>
           <div className="relative hidden w-72 md:block">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search customers, links, reports…" className="bg-secondary pl-9" />
+            <Input placeholder="Search customers, templates, reports…" className="bg-secondary pl-9" />
           </div>
-          <button
-            className="relative grid h-9 w-9 place-items-center rounded-md border border-border text-muted-foreground hover:text-mtl-blue"
-            aria-label="Notifications"
+          <Link
+            to={isAdmin ? "/admin/users" : "/settings"}
+            className="flex items-center gap-2 rounded-md border border-border py-1.5 pr-3 pl-1.5 hover:border-mtl-blue/50"
           >
-            <Bell className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 grid h-4 min-w-4 place-items-center rounded-full bg-status-crit px-1 text-[10px] font-bold text-mtl-blue-foreground">
-              5
-            </span>
-          </button>
-          <div className="flex items-center gap-2 rounded-md border border-border py-1.5 pr-3 pl-1.5">
             <div className="grid h-7 w-7 place-items-center rounded-full bg-mtl-blue text-[11px] font-bold text-mtl-blue-foreground">
-              GP
+              {session?.initials ?? "MTL"}
             </div>
             <div className="hidden leading-tight sm:block">
-              <p className="text-xs font-semibold">Grace Phiri</p>
+              <p className="text-xs font-semibold">{session?.name ?? "MTL user"}</p>
               <p className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                <StatusDot tone="ok" className="h-1.5 w-1.5" /> On shift
+                <StatusDot tone="ok" className="h-1.5 w-1.5" /> {session?.title ?? "—"}
               </p>
             </div>
-          </div>
+          </Link>
         </header>
         <main className="flex-1 p-5 lg:p-7">
           <Outlet />
