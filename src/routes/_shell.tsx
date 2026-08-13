@@ -28,6 +28,7 @@ const engineerNav = [
   { to: "/uploads", label: "Infrastructure Files", icon: Table2 },
   { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
   { to: "/reports", label: "Reports", icon: FileText },
+  { to: "/integrations", label: "Integrations", icon: Plug },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -47,6 +48,7 @@ const titles: Record<string, string> = {
   "/uploads": "Infrastructure File Uploads",
   "/reports": "Report Creation & Archive",
   "/templates": "Word Report Templates",
+  "/integrations": "Integrations",
   "/settings": "System Settings",
   "/admin": "System Administrator Dashboard",
   "/admin/users": "Manage Users",
