@@ -115,58 +115,7 @@ function DashboardPage() {
         </StatCard>
       </div>
 
-      <div className="mt-5 grid gap-5 xl:grid-cols-[1.4fr_1fr]">
-        <section className="panel overflow-hidden">
-          <div className="flex items-center justify-between border-b border-border p-5">
-            <div>
-              <h3 className="text-base font-bold">Template runs</h3>
-              <p className="text-xs text-muted-foreground">
-                Each run reads the Word template, captures the day's graphs and rebuilds the document
-              </p>
-            </div>
-            <Button asChild variant="ghost" size="sm">
-              <Link to="/reports">Open all runs</Link>
-            </Button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-secondary text-[11px] tracking-wider text-muted-foreground uppercase">
-                <tr>
-                  <th className="px-5 py-3 text-left font-semibold">Run</th>
-                  <th className="px-4 py-3 text-left font-semibold">Template</th>
-                  <th className="px-4 py-3 text-left font-semibold">Stage</th>
-                  <th className="px-4 py-3 text-left font-semibold">Progress</th>
-                  <th className="px-5 py-3 text-left font-semibold">Started</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportJobs.map((j) => (
-                  <tr key={j.id} className="border-t border-border hover:bg-secondary/50">
-                    <td className="px-5 py-3">
-                      <p className="font-semibold">{j.name}</p>
-                      <p className="font-mono text-[11px] text-muted-foreground">{j.id}</p>
-                    </td>
-                    <td className="px-4 py-3 font-mono text-[11px] text-muted-foreground">{j.template}</td>
-                    <td className="px-4 py-3">
-                      <StatusBadge
-                        tone={j.stage === "completed" ? "ok" : j.stage === "failed" ? "crit" : "info"}
-                        pulse={j.stage !== "completed" && j.stage !== "failed"}
-                      >
-                        {stageLabels[j.stage]}
-                      </StatusBadge>
-                    </td>
-                    <td className="w-32 px-4 py-3">
-                      <Progress value={j.progress} className="h-1.5" />
-                      <span className="text-[11px] text-muted-foreground">{j.progress}%</span>
-                    </td>
-                    <td className="px-5 py-3 text-xs text-muted-foreground">{j.started}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
+      <div className="mt-5">
         <section className="panel p-5">
           <h3 className="text-base font-bold">How a report is produced</h3>
           <p className="text-xs text-muted-foreground">The platform never polls the network itself</p>
