@@ -88,13 +88,15 @@ export const systemUsers: Array<{
   status: "Active" | "Suspended";
   lastLogin: string;
   reports: number;
+  integration: string;
+  protected?: boolean;
 }> = [
-  { name: "Christasia Mkandawire", email: "christasia@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Today 08:41", reports: 62 },
-  { name: "Infra Report Admin", email: "infrareportadmin@mtl.com", role: "System Administrator", status: "Active", lastLogin: "Today 08:12", reports: 4 },
-  { name: "Grace Phiri", email: "g.phiri@mtl.com", role: "Supervisor", status: "Active", lastLogin: "Today 07:45", reports: 38 },
-  { name: "Tawonga Banda", email: "t.banda@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Today 06:58", reports: 27 },
-  { name: "Chimwemwe Mvula", email: "c.mvula@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Yesterday 22:10", reports: 19 },
-  { name: "Lucius Chirwa", email: "l.chirwa@mtl.com", role: "NOC Engineer", status: "Suspended", lastLogin: "02 Aug 2026 19:33", reports: 11 },
+  { name: "Christasia Mkandawire", email: "christasia@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Today 08:41", reports: 62, integration: "SolarWinds (primary), Observium" },
+  { name: "Infra Report Admin", email: "infrareportadmin@mtl.com", role: "System Administrator", status: "Active", lastLogin: "Today 08:12", reports: 4, integration: "All integrations", protected: true },
+  { name: "Grace Phiri", email: "g.phiri@mtl.com", role: "Supervisor", status: "Active", lastLogin: "Today 07:45", reports: 38, integration: "SolarWinds (primary)" },
+  { name: "Tawonga Banda", email: "t.banda@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Today 06:58", reports: 27, integration: "Observium" },
+  { name: "Chimwemwe Mvula", email: "c.mvula@mtl.com", role: "NOC Engineer", status: "Active", lastLogin: "Yesterday 22:10", reports: 19, integration: "SolarWinds (primary)" },
+  { name: "Lucius Chirwa", email: "l.chirwa@mtl.com", role: "NOC Engineer", status: "Suspended", lastLogin: "02 Aug 2026 19:33", reports: 11, integration: "None assigned" },
 ];
 
 export const integrations: Array<{
@@ -107,7 +109,4 @@ export const integrations: Array<{
 }> = [
   { name: "SolarWinds (primary)", kind: "Graph source", url: "https://solarwinds.mtl.internal", status: "connected", lastUsed: "Today 06:04", detail: "Browser session · credentials encrypted at rest" },
   { name: "Observium", kind: "Graph source", url: "https://observium.mtl.internal", status: "connected", lastUsed: "Today 06:03", detail: "Browser session · graph refs mapped per interface" },
-  { name: "Mock provider", kind: "Development source", url: "local://mock", status: "connected", lastUsed: "Today 05:12", detail: "Used for template dry-runs without live access" },
-  { name: "MTL Mail Relay", kind: "Report delivery", url: "smtp://mail.mtl.internal:587", status: "degraded", lastUsed: "Today 06:10", detail: "Two delivery retries in the last 24 hours" },
-  { name: "Document Archive (SMB)", kind: "Storage", url: "smb://files.mtl.internal/reports", status: "disconnected", lastUsed: "05 Aug 2026 18:22", detail: "Share credentials expired · reconnect required" },
 ];
