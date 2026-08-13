@@ -50,6 +50,7 @@ function AdminUsersPage() {
                 <th className="px-4 py-3 text-left font-semibold">Email</th>
                 <th className="px-4 py-3 text-left font-semibold">Role</th>
                 <th className="px-4 py-3 text-left font-semibold">Status</th>
+                <th className="px-4 py-3 text-left font-semibold">Integration</th>
                 <th className="px-4 py-3 text-left font-semibold">Reports</th>
                 <th className="px-4 py-3 text-left font-semibold">Last login</th>
                 <th className="px-5 py-3 text-right font-semibold">Actions</th>
@@ -64,6 +65,7 @@ function AdminUsersPage() {
                   <td className="px-4 py-3">
                     <StatusBadge tone={u.status === "Active" ? "ok" : "warn"}>{u.status}</StatusBadge>
                   </td>
+                  <td className="px-4 py-3 text-xs">{u.integration}</td>
                   <td className="px-4 py-3 text-xs">{u.reports}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">{u.lastLogin}</td>
                   <td className="px-5 py-3 text-right">
@@ -74,21 +76,48 @@ function AdminUsersPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => toast.success(`Password reset link sent to ${u.email}`)}
+                        onClick={() => toast.success(`Integration access updated for ${u.name}`)}
                       >
-                        Reset password
+                        Add integration
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          toast.success(
-                            u.status === "Active" ? `${u.name} suspended` : `${u.name} reactivated`,
-                          )
-                        }
+                        onClick={() => toast.success(`Password reset link sent to ${u.email}`)}
                       >
-                        {u.status === "Active" ? "Suspend" : "Reactivate"}
+                        Reset password
                       </Button>
+                      {u.protected ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled
+                          title="The system administrator account is protected and cannot be suspended or deleted"
+                        >
+                          Protected account
+                        </Button>
+                      ) : (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              toast.success(
+                                u.status === "Active" ? `${u.name} suspended` : `${u.name} reactivated`,
+                              )
+                            }
+                          >
+                            {u.status === "Active" ? "Suspend" : "Reactivate"}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => toast.success(`${u.name} deleted`)}
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

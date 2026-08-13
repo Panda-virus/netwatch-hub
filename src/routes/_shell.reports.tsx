@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -54,7 +53,7 @@ function ReportsPage() {
           Data is pulled automatically from Observium, SolarWinds and SNMP archives for the selected scope.
         </p>
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-4">
+        <div className="mt-5 grid gap-4 lg:grid-cols-2">
           <Field label="Report Type">
             <Select defaultValue="daily">
               <SelectTrigger>
@@ -67,26 +66,6 @@ function ReportsPage() {
                 <SelectItem value="incident">Incident Report</SelectItem>
               </SelectContent>
             </Select>
-          </Field>
-          <Field label="Region">
-            <Select defaultValue="all">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Regions</SelectItem>
-                <SelectItem value="south">South Region</SelectItem>
-                <SelectItem value="central">Central Region</SelectItem>
-                <SelectItem value="north">North Region</SelectItem>
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field label="Date Range">
-            <div className="flex items-center gap-2">
-              <Input type="date" defaultValue="2026-08-01" />
-              <span className="text-xs text-muted-foreground">to</span>
-              <Input type="date" defaultValue="2026-08-07" />
-            </div>
           </Field>
           <Field label="Devices">
             <Select defaultValue="core">
