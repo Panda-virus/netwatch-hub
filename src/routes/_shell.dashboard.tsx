@@ -4,7 +4,6 @@ import { ArrowUpRight, FileStack, FileText, PlayCircle, RefreshCw, Table2 } from
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { reportJobs, stageLabels, wordTemplates } from "@/lib/report-data";
 
 export const Route = createFileRoute("/_shell/dashboard")({
