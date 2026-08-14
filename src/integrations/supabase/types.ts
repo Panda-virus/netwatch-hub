@@ -14,7 +14,375 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string
+          id: string
+          ip: string | null
+          resource: string | null
+          result: string
+        }
+        Insert: {
+          action: string
+          actor: string
+          created_at?: string
+          id?: string
+          ip?: string | null
+          resource?: string | null
+          result?: string
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string
+          id?: string
+          ip?: string | null
+          resource?: string | null
+          result?: string
+        }
+        Relationships: []
+      }
+      app_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          integration: string
+          is_protected: boolean
+          last_login_at: string | null
+          name: string
+          role: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          integration?: string
+          is_protected?: boolean
+          last_login_at?: string | null
+          name: string
+          role?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          integration?: string
+          is_protected?: boolean
+          last_login_at?: string | null
+          name?: string
+          role?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      infrastructure_files: {
+        Row: {
+          created_at: string
+          detected_columns: Json
+          error_message: string | null
+          filename: string
+          id: string
+          sheet_names: Json
+          size_bytes: number
+          status: string
+          storage_path: string | null
+          summary: Json
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          detected_columns?: Json
+          error_message?: string | null
+          filename: string
+          id?: string
+          sheet_names?: Json
+          size_bytes?: number
+          status?: string
+          storage_path?: string | null
+          summary?: Json
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          detected_columns?: Json
+          error_message?: string | null
+          filename?: string
+          id?: string
+          sheet_names?: Json
+          size_bytes?: number
+          status?: string
+          storage_path?: string | null
+          summary?: Json
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      infrastructure_links: {
+        Row: {
+          bandwidth_mbps: number | null
+          circuit_id: string | null
+          created_at: string
+          customer: string | null
+          device: string | null
+          file_id: string
+          id: string
+          interface_name: string | null
+          link_name: string
+          observium_ref: string | null
+          raw: Json
+          region: string | null
+          solarwinds_ref: string | null
+        }
+        Insert: {
+          bandwidth_mbps?: number | null
+          circuit_id?: string | null
+          created_at?: string
+          customer?: string | null
+          device?: string | null
+          file_id: string
+          id?: string
+          interface_name?: string | null
+          link_name: string
+          observium_ref?: string | null
+          raw?: Json
+          region?: string | null
+          solarwinds_ref?: string | null
+        }
+        Update: {
+          bandwidth_mbps?: number | null
+          circuit_id?: string | null
+          created_at?: string
+          customer?: string | null
+          device?: string | null
+          file_id?: string
+          id?: string
+          interface_name?: string | null
+          link_name?: string
+          observium_ref?: string | null
+          raw?: Json
+          region?: string | null
+          solarwinds_ref?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_links_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "infrastructure_files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integrations: {
+        Row: {
+          base_url: string
+          created_at: string
+          detail: string | null
+          id: string
+          kind: string
+          last_checked_at: string | null
+          last_used_at: string | null
+          login_password: string | null
+          login_username: string | null
+          name: string
+          owner_email: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          base_url: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          kind?: string
+          last_checked_at?: string | null
+          last_used_at?: string | null
+          login_password?: string | null
+          login_username?: string | null
+          name: string
+          owner_email?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          base_url?: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          kind?: string
+          last_checked_at?: string | null
+          last_used_at?: string | null
+          login_password?: string | null
+          login_username?: string | null
+          name?: string
+          owner_email?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      report_captures: {
+        Row: {
+          approved: boolean
+          captured_at: string | null
+          checksum: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          image_path: string | null
+          ocr_ok: boolean | null
+          ocr_text: string | null
+          platform: string
+          report_id: string
+          slot_key: string
+          slot_label: string | null
+          source_url: string | null
+          status: string
+        }
+        Insert: {
+          approved?: boolean
+          captured_at?: string | null
+          checksum?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          image_path?: string | null
+          ocr_ok?: boolean | null
+          ocr_text?: string | null
+          platform: string
+          report_id: string
+          slot_key: string
+          slot_label?: string | null
+          source_url?: string | null
+          status?: string
+        }
+        Update: {
+          approved?: boolean
+          captured_at?: string | null
+          checksum?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          image_path?: string | null
+          ocr_ok?: boolean | null
+          ocr_text?: string | null
+          platform?: string
+          report_id?: string
+          slot_key?: string
+          slot_label?: string | null
+          source_url?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_captures_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_templates: {
+        Row: {
+          body_text: string | null
+          created_at: string
+          filename: string
+          graph_slots: Json
+          id: string
+          is_active: boolean
+          label: string
+          placeholders: Json
+          size_bytes: number
+          storage_path: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          body_text?: string | null
+          created_at?: string
+          filename: string
+          graph_slots?: Json
+          id?: string
+          is_active?: boolean
+          label: string
+          placeholders?: Json
+          size_bytes?: number
+          storage_path?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          body_text?: string | null
+          created_at?: string
+          filename?: string
+          graph_slots?: Json
+          id?: string
+          is_active?: boolean
+          label?: string
+          placeholders?: Json
+          size_bytes?: number
+          storage_path?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          approved_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          format: string
+          html: string | null
+          id: string
+          name: string
+          period_label: string | null
+          status: string
+          template_id: string | null
+          template_label: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          format?: string
+          html?: string | null
+          id?: string
+          name: string
+          period_label?: string | null
+          status?: string
+          template_id?: string | null
+          template_label?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          format?: string
+          html?: string | null
+          id?: string
+          name?: string
+          period_label?: string | null
+          status?: string
+          template_id?: string | null
+          template_label?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "report_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
