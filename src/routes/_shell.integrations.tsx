@@ -25,7 +25,7 @@ function IntegrationsPage() {
         title="Integrations"
         subtitle="Graph sources the platform signs in to when capturing report screenshots"
       />
-      <IntegrationsManager canDelete={{false}} />
+      <IntegrationsManager canDelete={false} />
       <div className="mt-5 flex flex-wrap gap-3">
         <Button asChild variant="outline">
           <Link to="/dashboard">Back to dashboard</Link>
