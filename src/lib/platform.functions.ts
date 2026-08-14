@@ -92,8 +92,8 @@ export const saveIntegration = createServerFn({ method: "POST" })
     if (data.login_password && data.login_password.length > 0) patch["login_password"] = data.login_password;
 
     const saved = data.id
-      ? await supabase.from("integrations").update(patch).eq("id", data.id).select("*").single()
-      : await supabase.from("integrations").insert(patch).select("*").single();
+      ? await supabase.from("integrations").update(patch as never).eq("id", data.id).select("*").single()
+      : await supabase.from("integrations").insert(patch as never).select("*").single();
 
     if (saved.error || !saved.data) throw new Error(saved.error?.message ?? "Could not save the connection.");
 
@@ -283,7 +283,7 @@ export const uploadInfraFile = createServerFn({ method: "POST" })
           solarwinds_ref: (l["solarwinds_ref"] as string) ?? null,
           raw: l["raw"] ?? {},
         }));
-        await supabase.from("infrastructure_links").insert(chunk);
+        await supabase.from("infrastructure_links").insert(chunk as never);
       }
     }
 
@@ -570,7 +570,7 @@ export const generateReport = createServerFn({ method: "POST" })
       }
     }
 
-    if (captureRows.length > 0) await supabase.from("report_captures").insert(captureRows);
+    if (captureRows.length > 0) await supabase.from("report_captures").insert(captureRows as never);
 
     const { data: captures } = await supabase
       .from("report_captures")
@@ -667,7 +667,7 @@ export const finaliseReport = createServerFn({ method: "POST" })
       approved_at: new Date().toISOString(),
     };
     if (data.html) patch["html"] = data.html;
-    await supabase.from("reports").update(patch).eq("id", data.reportId);
+    await supabase.from("reports").update(patch as never).eq("id", data.reportId);
     const { data: row } = await supabase.from("reports").select("name").eq("id", data.reportId).single();
     await supabase
       .from("activity_logs")
