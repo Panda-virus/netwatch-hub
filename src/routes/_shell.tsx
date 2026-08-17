@@ -10,7 +10,6 @@ import {
   ScrollText,
   Table2,
   Users,
-  LayoutTemplate,
 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -26,8 +25,7 @@ export const Route = createFileRoute("/_shell")({
 const engineerNav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/uploads", label: "Infrastructure Files", icon: Table2 },
-  { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
-  { to: "/reports", label: "Reports", icon: FileText },
+  { to: "/reports", label: "Reports & Templates", icon: FileText },
   { to: "/integrations", label: "Integrations", icon: Plug },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
@@ -38,16 +36,14 @@ const adminNav = [
   { to: "/admin/logs", label: "User Logs & Activity", icon: ScrollText },
   { to: "/admin/integrations", label: "Integrations", icon: Plug },
   { to: "/admin/security", label: "Security", icon: ShieldCheck },
-  { to: "/templates", label: "Report Templates", icon: LayoutTemplate },
-  { to: "/reports", label: "Reports", icon: FileText },
+  { to: "/reports", label: "Reports & Templates", icon: FileText },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
 const titles: Record<string, string> = {
   "/dashboard": "Report Creation Dashboard",
   "/uploads": "Infrastructure File Uploads",
-  "/reports": "Report Creation & Archive",
-  "/templates": "Word Report Templates",
+  "/reports": "Report Creation & Templates",
   "/integrations": "Integrations",
   "/settings": "System Settings",
   "/admin": "System Administrator Dashboard",

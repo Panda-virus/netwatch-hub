@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { KeyRound, Lock, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
@@ -6,7 +7,7 @@ import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { activityLogs } from "@/lib/report-data";
+import { listLogs } from "@/lib/platform.functions";
 
 export const Route = createFileRoute("/_shell/admin/security")({
   head: () => ({
@@ -39,7 +40,8 @@ const policies = [
 ];
 
 function AdminSecurityPage() {
-  const failures = activityLogs.filter((l) => l.result === "failure");
+  const { data: logs = [] } = useQuery({ queryKey: ["logs"], queryFn: () => listLogs() });
+  const failures = logs.filter((l) => l.result === "failure");
 
   return (
     <>
@@ -100,14 +102,14 @@ function AdminSecurityPage() {
             <p className="text-xs text-muted-foreground">Pulled from the activity log</p>
             <ul className="mt-4 space-y-3">
               {failures.map((f) => (
-                <li key={`${f.time}-${f.action}`} className="rounded-md border border-border p-3">
+                <li key={f.id} className="rounded-md border border-border p-3">
                   <div className="flex items-center justify-between gap-2">
                     <StatusBadge tone="crit">{f.result}</StatusBadge>
-                    <span className="text-xs text-muted-foreground">{f.time}</span>
+                    <span className="text-xs text-muted-foreground">{new Date(f.created_at).toLocaleString()}</span>
                   </div>
                   <p className="mt-2 text-sm font-semibold">{f.action}</p>
                   <p className="text-[11px] text-muted-foreground">
-                    {f.actor} · {f.resource} · {f.ip}
+                    {f.actor} · {f.resource ?? "—"}
                   </p>
                 </li>
               ))}

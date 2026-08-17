@@ -1,10 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, FileStack, FileText, PlayCircle, RefreshCw, Table2 } from "lucide-react";
+import { FileStack, FileText, PlayCircle, Plug, Table2 } from "lucide-react";
 
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
-import { reportJobs, stageLabels, wordTemplates } from "@/lib/report-data";
+import { getOverview } from "@/lib/platform.functions";
 
 export const Route = createFileRoute("/_shell/dashboard")({
   head: () => ({
@@ -13,12 +14,12 @@ export const Route = createFileRoute("/_shell/dashboard")({
       {
         name: "description",
         content:
-          "NOC engineer dashboard for MTL automated report creation: template runs, graph capture progress and finished report documents.",
+          "NOC engineer dashboard for MTL automated report creation: templates read, graph sources, infrastructure links and generated report documents.",
       },
       { property: "og:title", content: "Report Creation Dashboard | MTL Report Platform" },
       {
         property: "og:description",
-        content: "Track Word template runs, graph capture and generated MTL report documents.",
+        content: "Track Word templates, graph sources and generated MTL report documents.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -60,71 +61,59 @@ function StatCard({
 }
 
 function DashboardPage() {
-  const active = reportJobs.filter((j) => j.stage !== "completed" && j.stage !== "failed");
-  const activeTemplate = wordTemplates.find((t) => t.active) ?? wordTemplates[0]!;
+  const { data } = useQuery({ queryKey: ["overview"], queryFn: () => getOverview() });
 
   return (
     <>
       <PageHeading
         title="Report Creation Dashboard"
-        subtitle={`Active template: ${activeTemplate.file} · today's graphs captured 06:04`}
+        subtitle="Everything shown here is read from the platform database"
         actions={
-          <>
-            <Button asChild variant="outline" size="sm">
-              <Link to="/reports">
-                <RefreshCw className="mr-2 h-4 w-4" /> View report runs
-              </Link>
-            </Button>
-            <Button asChild size="sm">
-              <Link to="/reports">
-                <PlayCircle className="mr-2 h-4 w-4" /> Create today's report
-              </Link>
-            </Button>
-          </>
+          <Button asChild size="sm">
+            <Link to="/reports">
+              <PlayCircle className="mr-2 h-4 w-4" /> Create a report
+            </Link>
+          </Button>
         }
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Word Templates" value={String(wordTemplates.length)} icon={FileStack} to="/templates">
+        <StatCard label="Word templates" value={String(data?.templates ?? 0)} icon={FileStack} to="/reports">
+          <p className="text-xs text-muted-foreground">Uploaded and read for placeholders and graph slots</p>
+        </StatCard>
+
+        <StatCard label="Reports generated" value={String(data?.generated ?? 0)} icon={FileText} to="/reports" highlight>
           <p className="text-xs text-muted-foreground">
-            {activeTemplate.placeholders} placeholders · {activeTemplate.graphSlots} graph slots detected
+            {data?.reports ?? 0} total runs · {data?.needsAttention ?? 0} need attention
           </p>
         </StatCard>
 
-        <StatCard label="Runs in progress" value={String(active.length)} icon={PlayCircle} to="/reports" highlight>
+        <StatCard label="Infrastructure links" value={String(data?.links ?? 0)} icon={Table2} to="/uploads">
+          <p className="text-xs text-muted-foreground">From {data?.files ?? 0} uploaded workbook(s)</p>
+        </StatCard>
+
+        <StatCard label="Graph sources" value={String(data?.integrations.length ?? 0)} icon={Plug} to="/integrations">
           <div className="flex flex-wrap gap-2">
-            {active.map((j) => (
-              <StatusBadge key={j.id} tone="info" pulse>
-                {stageLabels[j.stage]}
+            {(data?.integrations ?? []).map((i) => (
+              <StatusBadge key={i.id} tone={i.status === "connected" ? "ok" : i.status === "degraded" ? "warn" : "crit"}>
+                {i.name}
               </StatusBadge>
             ))}
           </div>
         </StatCard>
-
-        <StatCard label="Reports created (24h)" value="12" icon={FileText} to="/reports">
-          <p className="flex items-center gap-1 text-xs text-muted-foreground">
-            <ArrowUpRight className="h-3.5 w-3.5 text-status-ok" /> 11 duplicated from template · 1 failed
-          </p>
-        </StatCard>
-
-        <StatCard label="Infrastructure rows" value="214" icon={Table2} to="/uploads">
-          <p className="text-xs text-muted-foreground">
-            From MTL_Infrastructure_Aug2026.xlsx · 3 invalid rows
-          </p>
-        </StatCard>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-5 grid gap-5 xl:grid-cols-[1fr_1fr]">
         <section className="panel p-5">
           <h3 className="text-base font-bold">How a report is produced</h3>
           <p className="text-xs text-muted-foreground">The platform never polls the network itself</p>
           <ol className="mt-4 space-y-3">
             {[
-              { step: "Read the Word template", detail: "Sections, tables and graph placeholders are extracted from the .docx" },
-              { step: "Resolve infrastructure", detail: "Excel workbook says which customer links belong in the report" },
-              { step: "Capture today's graphs", detail: "Screenshots pulled from the existing graph sources" },
-              { step: "Duplicate the template", detail: "Same layout, today's graphs, figures and observations" },
-              { step: "Publish PDF & Word", detail: "Stored in the archive for management review" },
+              { step: "Read the Word template", detail: "Placeholders and graph slots are extracted from the .docx" },
+              { step: "Resolve infrastructure", detail: "The Excel workbook says which major links belong in the report" },
+              { step: "Sign in and capture", detail: "SolarWinds and Observium graphs are captured for those links" },
+              { step: "Duplicate the template", detail: "Same structure, today's graphs, figures and observations" },
+              { step: "Review and download", detail: "You verify the preview, then download HTML or PDF" },
             ].map((s, i) => (
               <li key={s.step} className="flex gap-3 rounded-md border border-border bg-secondary/50 p-3">
                 <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-mtl-blue text-[11px] font-bold text-mtl-blue-foreground">
@@ -137,9 +126,31 @@ function DashboardPage() {
               </li>
             ))}
           </ol>
-          <Button asChild variant="outline" className="mt-4 w-full" size="sm">
-            <Link to="/templates">Open template manager</Link>
-          </Button>
+        </section>
+
+        <section className="panel overflow-hidden">
+          <div className="border-b border-border p-5">
+            <h3 className="text-base font-bold">Recent platform activity</h3>
+            <p className="text-xs text-muted-foreground">Uploads, connection tests and report actions</p>
+          </div>
+          <ul className="divide-y divide-border">
+            {(data?.recentLogs ?? []).length === 0 ? (
+              <li className="p-5 text-sm text-muted-foreground">No activity recorded yet.</li>
+            ) : null}
+            {(data?.recentLogs ?? []).map((l) => (
+              <li key={l.id} className="flex flex-wrap items-center gap-3 p-4">
+                <StatusBadge tone={l.result === "success" ? "ok" : "crit"}>{l.result}</StatusBadge>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{l.action}</p>
+                  <p className="truncate text-[11px] text-muted-foreground">
+                    {l.actor}
+                    {l.resource ? ` · ${l.resource}` : ""}
+                  </p>
+                </div>
+                <span className="text-xs text-muted-foreground">{new Date(l.created_at).toLocaleString()}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </>
