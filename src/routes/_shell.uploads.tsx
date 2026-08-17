@@ -9,7 +9,7 @@ import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth";
 import { fileToBase64 } from "@/lib/file-upload";
-import { deleteInfraFile, listInfraFiles, listInfraLinks } from "@/lib/platform.functions";
+import { deleteInfraFile, listInfraFiles, listInfraLinks, uploadInfraFile } from "@/lib/platform.functions";
 
 export const Route = createFileRoute("/_shell/uploads")({
   head: () => ({
@@ -63,7 +63,7 @@ function UploadsPage() {
     setUploading(true);
     try {
       const base64 = await fileToBase64(file);
-      const row = await uploadWorkbook(file.name, base64, actor);
+      const row = await uploadInfraFile({ data: { filename: file.name, base64, actor } });
       await queryClient.invalidateQueries({ queryKey: ["infra-files"] });
       await queryClient.invalidateQueries({ queryKey: ["infra-links"] });
       setSelected(row.id);
@@ -269,9 +269,4 @@ function UploadsPage() {
       </section>
     </>
   );
-}
-
-async function uploadWorkbook(filename: string, base64: string, actor: string) {
-  const { uploadInfraFile } = await import("@/lib/platform.functions");
-  return uploadInfraFile({ data: { filename, base64, actor } });
 }
