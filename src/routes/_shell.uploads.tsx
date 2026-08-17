@@ -54,7 +54,7 @@ function UploadsPage() {
   const activeFileId = selected ?? files.find((f) => f.status === "imported")?.id;
   const { data: links = [] } = useQuery({
     queryKey: ["infra-links", activeFileId ?? "latest"],
-    queryFn: () => listInfraLinks({ data: { fileId: activeFileId } }),
+    queryFn: () => listInfraLinks({ data: activeFileId ? { fileId: activeFileId } : {} }),
   });
 
   const latest = files.find((f) => f.id === activeFileId) ?? files[0];
