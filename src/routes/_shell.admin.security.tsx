@@ -40,7 +40,8 @@ const policies = [
 ];
 
 function AdminSecurityPage() {
-  const failures = activityLogs.filter((l) => l.result === "failure");
+  const { data: logs = [] } = useQuery({ queryKey: ["logs"], queryFn: () => listLogs() });
+  const failures = logs.filter((l) => l.result === "failure");
 
   return (
     <>
