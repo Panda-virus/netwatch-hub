@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { KeyRound, Lock, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
@@ -6,7 +7,7 @@ import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { activityLogs } from "@/lib/report-data";
+import { listLogs } from "@/lib/platform.functions";
 
 export const Route = createFileRoute("/_shell/admin/security")({
   head: () => ({

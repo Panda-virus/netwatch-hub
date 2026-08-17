@@ -1,10 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Plug, ScrollText, ShieldCheck, Users } from "lucide-react";
 
 import { PageHeading } from "@/components/noc/PageHeading";
 import { StatusBadge } from "@/components/noc/StatusDot";
 import { Button } from "@/components/ui/button";
-import { activityLogs, integrations, systemUsers } from "@/lib/report-data";
+import { getOverview, listUsers } from "@/lib/platform.functions";
 
 export const Route = createFileRoute("/_shell/admin/")({
   head: () => ({
@@ -28,6 +29,10 @@ export const Route = createFileRoute("/_shell/admin/")({
 });
 
 function AdminDashboard() {
+  const { data: overview } = useQuery({ queryKey: ["overview"], queryFn: () => getOverview() });
+  const { data: systemUsers = [] } = useQuery({ queryKey: ["users"], queryFn: () => listUsers() });
+  const activityLogs = overview?.recentLogs ?? [];
+  const integrations = overview?.integrations ?? [];
   const activeUsers = systemUsers.filter((u) => u.status === "Active").length;
   const failures = activityLogs.filter((l) => l.result === "failure").length;
   const healthy = integrations.filter((i) => i.status === "connected").length;
@@ -57,11 +62,11 @@ function AdminDashboard() {
         <Tile to="/admin/users" label="Users in system" value={String(systemUsers.length)} icon={Users}>
           {activeUsers} active · {systemUsers.length - activeUsers} suspended
         </Tile>
-        <Tile to="/admin/logs" label="Events today" value={String(activityLogs.length)} icon={ScrollText}>
+        <Tile to="/admin/logs" label="Recent events" value={String(activityLogs.length)} icon={ScrollText}>
           {failures} failed action{failures === 1 ? "" : "s"} recorded
         </Tile>
         <Tile to="/admin/integrations" label="Integrations" value={`${healthy}/${integrations.length}`} icon={Plug}>
-          1 degraded · 1 disconnected
+          {integrations.length - healthy} not confirmed reachable
         </Tile>
         <Tile to="/admin/security" label="Security posture" value="Good" icon={ShieldCheck}>
           Credentials encrypted · MFA pending rollout
@@ -81,15 +86,16 @@ function AdminDashboard() {
           </div>
           <ul className="divide-y divide-border">
             {activityLogs.slice(0, 6).map((l) => (
-              <li key={`${l.time}-${l.action}`} className="flex flex-wrap items-center gap-3 p-4">
+              <li key={l.id} className="flex flex-wrap items-center gap-3 p-4">
                 <StatusBadge tone={l.result === "success" ? "ok" : "crit"}>{l.result}</StatusBadge>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{l.action}</p>
                   <p className="truncate text-[11px] text-muted-foreground">
-                    {l.actor} · {l.resource} · {l.ip}
+                    {l.actor}
+                    {l.resource ? ` · ${l.resource}` : ""}
                   </p>
                 </div>
-                <span className="text-xs text-muted-foreground">{l.time}</span>
+                <span className="text-xs text-muted-foreground">{new Date(l.created_at).toLocaleString()}</span>
               </li>
             ))}
           </ul>
@@ -100,7 +106,7 @@ function AdminDashboard() {
           <p className="text-xs text-muted-foreground">Report activity per account</p>
           <ul className="mt-4 space-y-3">
             {systemUsers.map((u) => (
-              <li key={u.email} className="rounded-md border border-border p-3">
+              <li key={u.id} className="rounded-md border border-border p-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-semibold">{u.name}</p>
                   <StatusBadge tone={u.status === "Active" ? "ok" : "warn"}>{u.status}</StatusBadge>
@@ -109,7 +115,8 @@ function AdminDashboard() {
                   {u.email} · {u.role}
                 </p>
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  {u.reports} reports created · last login {u.lastLogin}
+                  {u.integration} · last login{" "}
+                  {u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "never"}
                 </p>
               </li>
             ))}
