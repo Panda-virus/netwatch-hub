@@ -1,18 +1,18 @@
-# MTL Network Watch
+# Network Watch
 
 Design a complete web-based Network Operations Center (NOC) Automation and Reporting System called:
 
-"MTL Automated Network Performance Monitoring & Reporting System (ANPMRS)"
+"Automated Network Performance Monitoring & Reporting System (ANPMRS)"
 
-The system is designed for Malawi Telecommunications Limited (MTL) NOC department. It should be a professional enterprise monitoring platform that automatically collects network performance data from monitoring tools such as Observium and SolarWinds, analyzes network health, generates reports, and helps NOC engineers monitor the entire MTL network infrastructure.
+The system is designed for a NOC department. It should be a professional enterprise monitoring platform that automatically collects network performance data from monitoring tools such as Observium and SolarWinds, analyzes network health, generates reports, and helps NOC engineers monitor the entire network infrastructure.
 
 The design should look like a modern telecommunications company application. The theme must follow MTL branding:
 
 Primary colors:
 
-- MTL Blue (#1E1E8C): main navigation, headers, buttons
+- Blue (#1E1E8C): main navigation, headers, buttons
 
-- MTL Yellow (#FFE600): highlights, alerts, important statistics
+- Yellow (#FFE600): highlights, alerts, important statistics
 
 - White (#FFFFFF): background and clean spaces
 
@@ -138,7 +138,7 @@ Top:
 
 - System name:
 
-"MTL Automated Network Performance Monitoring System"
+"Automated Network Performance Monitoring System"
 
 Fields:
 
@@ -784,21 +784,7 @@ The design should emphasize:
 
 The final output should be a complete high-fidelity UI/UX design prototype for a telecom network monitoring and automated reporting platform.
 
-This project was built with [Lovable](https://lovable.dev).
-
 **Live app**: https://mtl-netwatch-hub.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/504f4353-2c0f-4b88-81be-69b58b65da6f).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 git clone <this-repository-url>
